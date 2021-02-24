@@ -13,6 +13,7 @@
     <span>19,000 원</span>
     <p>----------------------</p>
     <div><label><input type="radio" name="method" value="카드" checked/>신용카드</label></div>
+    <div><label><input type="radio" name="method" value="가상계좌" checked/>가상계좌</label></div>
     <p>----------------------</p>
     <button id="payment-button">결제하기</button>
 </section>
@@ -24,7 +25,7 @@
     var orderId = new Date().getTime();
 
     button.addEventListener("click", function () {
-        var method = document.querySelector('input[name=method]:checked').value; // "카드"
+        var method = document.querySelector('input[name=method]:checked').value; // "카드" 혹은 "가상계좌"
 
         var paymentData = {
             amount: 19000,
@@ -34,6 +35,10 @@
             successUrl: window.location.origin + "/jsp-sample/success.jsp",
             failUrl: window.location.origin + "/jsp-sample/fail.jsp",
         };
+        
+        if (method === '가상계좌') {
+            paymentData.virtualAccountCallbackUrl = window.location.origin + '/jsp-sample/VirtualAccountCallback.jsp'
+        }
 
         tossPayments.requestPayment(method, paymentData);
     });
